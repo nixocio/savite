@@ -26,7 +26,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">My Site</a>
+            <a class="navbar-brand" href="{% url 'core:home' %}">My Site</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,10 +34,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'core:home' %}">Home</a>
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:site_management'%}">Manage your project<span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                </div>
+
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -54,7 +63,7 @@
                 {% else %}
                 <form class="form-inline my-2 my-lg-0">
                     <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
-                    <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Sign up</a>
+                    <a href="{% url 'core:signup' %}" class="btn btn-primary ml-2">Sign up</a>
                 </form>
                 {% endif %}
             </div>

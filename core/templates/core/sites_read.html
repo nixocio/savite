@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for site in sites %}
+        <div class="col-md-4">
+            <div class="card mb-2 box-shadow">
+                <div class="card-body">
+                    <p class="card-text">{{ site.url }}</p>
+                    <p class="card-text">{{ site.category }}</p>
+                    <small class="text-muted">{{ site.created_at}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'core:site_create' %}" class="btn btn-success" role="button" aria-pressed="true">Add</a>
+
+<div class="container">
+
+  <h2>Striped Rows</h2>
+  <p>The .table-striped class adds zebra-stripes to a table:</p>
+  <br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>URL</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for site in sites %}
+      <tr>
+        <td>{{ site.url }}</td>
+        <td>{{ site.category }}</td>
+        <td>
+          <a href="{% url 'core:site_edit' site.id %}" class="btn btn-warning" role="button"
+            aria-pressed="true">Edit</a>
+          <a href="{% url 'core:site_delete' site.id %}" class="btn btn-danger" role="button"
+            aria-pressed="true">Del</a>
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+</div>
+
+
+{% endblock %}
