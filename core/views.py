@@ -15,20 +15,18 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            return redirect("core:sites_read")
     else:
         form = CustomUserCreationForm()
     return render(request, "registration/signup.html", {"form": form})
 
 
 @login_required
-def site_create(request):
+def sites_create(request):
     if request.method == "POST":
         form = SiteForm(request.POST)
         if form.is_valid():
             url = form.cleaned_data["url"]
-            pprint(url)
-
             category = form.cleaned_data["category"]
             Site(url=url, category=category, user=request.user).save()
             return redirect("core:sites_read")
@@ -37,13 +35,13 @@ def site_create(request):
     return render(request, "core/site_create.html", {"form": form})
 
 
-def get_screen_shot(url):
-    pass
-
-
 def sites_read(request):
     sites = Site.objects.all()
     return render(request, "core/sites_read.html", {"sites": sites})
+
+
+def get_screen_shot(url):
+    pass
 
 
 @login_required

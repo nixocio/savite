@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -15,9 +16,7 @@ class Category(models.Model):
 
 
 class Site(models.Model):
-    url = models.URLField(
-        verbose_name="Site URL",
-    )
+    url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="categories"
     )
@@ -29,4 +28,4 @@ class Site(models.Model):
         ordering = ("-modified_at",)
 
     def __str__(self):
-        return '{}'
+        return "{}"
