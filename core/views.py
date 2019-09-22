@@ -10,6 +10,10 @@ from core.forms import SiteForm
 from users.forms import CustomUserChangeForm, CustomUserCreationForm
 
 
+def site_read(request):
+    sites = Site.objects.all()
+    return render(request, "core/sites_read.html", {"sites": sites})
+
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -29,15 +33,10 @@ def sites_create(request):
             url = form.cleaned_data["url"]
             category = form.cleaned_data["category"]
             Site(url=url, category=category, user=request.user).save()
-            return redirect("core:sites_read")
+            return redirect("core:site_management")
     else:
         form = SiteForm()
     return render(request, "core/site_create.html", {"form": form})
-
-
-def sites_read(request):
-    sites = Site.objects.all()
-    return render(request, "core/sites_read.html", {"sites": sites})
 
 
 def get_screen_shot(url):
@@ -56,7 +55,7 @@ def site_edit(request, site_id):
     form = SiteForm(request.POST or None, instance=site)
     if form.is_valid():
         form.save()
-    return redirect("core:site_management")
+        return redirect("core:site_management")
     return render(request, "core/site_create.html", {"form": form})
 
 

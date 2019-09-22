@@ -6,7 +6,7 @@ from core import views
 app_name = "core"
 
 urlpatterns = [
-    path("", views.sites_read, name="home"),
+    path("", views.site_read, name="home"),
     path("site/create/", views.sites_create, name="site_create"),
     path("site/delete/<int:site_id>/", views.site_delete, name="site_delete"),
     # path("product/details/<int:product_id>/", views.product_details, name="product_details"),
