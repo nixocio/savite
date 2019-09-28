@@ -18,7 +18,7 @@
     <tbody>
       {% for site in sites %}
       <tr>
-        <td>{{ site.url }}</td>
+        <td><a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></td>
         <td>{{ site.category }}</td>
         <td>
           <a href="{% url 'core:site_edit' site.id %}" class="btn btn-warning" role="button"

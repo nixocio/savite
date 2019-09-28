@@ -132,3 +132,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGIN_REDIRECT_URL = "core:home"
 
 LOGOUT_REDIRECT_URL = "core:home"
+
+# Celery Stuff
+
+CELERY_BROKER_URL = "amqp://localhost"

@@ -3,14 +3,15 @@ import urllib.parse as urlparse
 from datetime import datetime
 from pprint import pprint
 
+from celery import shared_task
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from selenium.webdriver import Firefox, Chrome
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options
 
 from core.forms import SiteForm
 from core.models import Site
@@ -42,7 +43,9 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             pprint(url)
-            image_path, image_name = get_screen_shot(url)
+            now = str(datetime.today().timestamp())
+            image_name = "".join([now, "_image.png"])
+            get_screen_shot.delay(url, image_name)
 
             Site(
                 category=category,
@@ -57,25 +60,21 @@ def sites_create(request):
         form = SiteForm()
     return render(request, "core/site_create.html", {"form": form})
 
-
-def get_screen_shot(url):
+@shared_task
+def get_screen_shot(url, image_name):
     width = 400
     height = 400
     options = ChromeOptions()
     options.headless = True
-    # driver = Firefox(options=options)
     driver = Chrome(options=options)
     driver.get(url)
     driver.set_window_size(width, height)
-    now = str(datetime.today().timestamp())
     img_dir = settings.MEDIA_ROOT
-    img_name = "".join([now, "_image.png"])
-    full_img_path = os.path.join(img_dir, img_name)
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
-    driver.save_screenshot(full_img_path)
+    driver.save_screenshot(os.path.join(img_dir, image_name))
     driver.quit()
-    return full_img_path, img_name
+    return None
 
 
 @login_required

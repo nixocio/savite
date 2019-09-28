@@ -1,3 +1,6 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -28,12 +31,9 @@ class Site(models.Model):
 
     @property
     def image_path_modified(self):
-        return 'default_image.jpg'
-        
-    #     @property
-    # def hostname(self):
-    #     return urlparse.urlparse(self.url).hostname
-
+        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, self.image_path)):
+            return self.image_path
+        return "default_image.jpg"
 
     class Meta:
         ordering = ("-modified_at",)

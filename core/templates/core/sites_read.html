@@ -8,9 +8,12 @@
         <div class="col-md-4">
             <div class="card mb-2 box-shadow">
                 <div class="card-body">
-                    <p class="card-text">{{ site.url }}</p>
+                    <!-- <p class="card-text">{{ site.url|truncatechars:35 }}</p> -->
+                    <p class="card-text"> <a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></p>
+
                     <p class="card-text">{{ site.category }}</p>
-                    <img src="{{ MEDIA_URL }}{{ site.image_path_modified }}" class="card-img-top" width="400" height="400">
+                    <img src="{{ MEDIA_URL }}{{ site.image_path_modified }}" class="card-img-top" width="400"
+                        height="400">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                         </div>
