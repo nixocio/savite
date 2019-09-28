@@ -20,9 +20,20 @@ class Site(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="categories"
     )
+    image_path = models.CharField(max_length=300)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    deadline = models.DateTimeField(blank=False)
+
+    @property
+    def image_path_modified(self):
+        return 'default_image.jpg'
+        
+    #     @property
+    # def hostname(self):
+    #     return urlparse.urlparse(self.url).hostname
+
 
     class Meta:
         ordering = ("-modified_at",)

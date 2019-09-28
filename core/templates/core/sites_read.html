@@ -10,10 +10,11 @@
                 <div class="card-body">
                     <p class="card-text">{{ site.url }}</p>
                     <p class="card-text">{{ site.category }}</p>
+                    <img src="{{ MEDIA_URL }}{{ site.image_path_modified }}" class="card-img-top" width="400" height="400">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                         </div>
-                        <small class="text-muted">{{ site.created_at}}</small>
+                        <small class="text-muted">{{ site.deadline }}</small>
                     </div>
                 </div>
             </div>

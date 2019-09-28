@@ -1,6 +1,10 @@
 from django import forms
 
-from core.models import Site, Category
+from core.models import Category, Site
+
+
+class DateInput(forms.DateInput):
+    input_type = "date"
 
 
 class SiteForm(forms.ModelForm):
@@ -17,5 +21,5 @@ class SiteForm(forms.ModelForm):
 
     class Meta:
         model = Site
-        fields = ("category", "url")
-
+        widgets = {"deadline": DateInput()}
+        fields = ("category", "url", "deadline")
