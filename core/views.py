@@ -14,13 +14,44 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options
 
 from core.forms import SiteForm
-from core.models import Site
+from core.models import Site, Category
 from users.forms import CustomUserChangeForm, CustomUserCreationForm
+from django.db.models import Count
 
 
 def site_read(request):
     sites = Site.objects.all()
-    return render(request, "core/sites_read.html", {"sites": sites})
+    categories = Category.objects.all()
+    total_categories = {}
+    for category in categories:
+        total = Site.objects.filter(category__name=category).count()
+        if total > 0:
+            total_categories.update({category.name: total})
+    pprint(total_categories)
+    return render(
+        request,
+        "core/sites_read.html",
+        {
+            "sites": sites,
+            "total_categories": total_categories,
+            "total_overview": sum(total_categories.values()),
+        },
+    )
+
+
+def site_filter_category(request, category):
+    sites = Site.objects.filter(category__name=category)
+    total = Site.objects.filter(category__name=category).count()
+    total_categories = {category: total}
+    return render(
+        request,
+        "core/sites_read.html",
+        {
+            "sites": sites,
+            "total_categories": total_categories,
+            "total_overview": sum(total_categories.values()),
+        },
+    )
 
 
 def signup(request):
@@ -60,22 +91,6 @@ def sites_create(request):
         form = SiteForm()
     return render(request, "core/site_create.html", {"form": form})
 
-@shared_task
-def get_screen_shot(url, image_name):
-    width = 400
-    height = 400
-    options = ChromeOptions()
-    options.headless = True
-    driver = Chrome(options=options)
-    driver.get(url)
-    driver.set_window_size(width, height)
-    img_dir = settings.MEDIA_ROOT
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
-    driver.save_screenshot(os.path.join(img_dir, image_name))
-    driver.quit()
-    return None
-
 
 @login_required
 def site_management(request):
@@ -98,3 +113,20 @@ def site_delete(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
     site.delete()
     return redirect("core:site_management")
+
+
+@shared_task
+def get_screen_shot(url, image_name, username=None):
+    width = 680
+    height = 1200
+    options = ChromeOptions()
+    options.headless = True
+    driver = Chrome(options=options)
+    driver.get(url)
+    driver.set_window_size(width, height)
+    img_dir = settings.MEDIA_ROOT
+    if not os.path.exists(img_dir):
+        os.makedirs(img_dir)
+    driver.save_screenshot(os.path.join(img_dir, image_name))
+    driver.quit()
+    return None

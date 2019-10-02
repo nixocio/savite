@@ -5,6 +5,17 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 
+# Career
+# Podcast
+# Productivity
+# Linux
+# Business
+# Python
+# Front-End
+# Back-End
+# Education
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -20,9 +31,7 @@ class Category(models.Model):
 
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="categories"
-    )
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="categories")
     image_path = models.CharField(max_length=300)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

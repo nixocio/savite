@@ -1,0 +1,1 @@
+celery -A web_app worker -l info
