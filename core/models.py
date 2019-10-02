@@ -3,7 +3,8 @@ import os
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 # Career
 # Podcast
@@ -31,7 +32,9 @@ class Category(models.Model):
 
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="categories")
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, related_name="categories"
+    )
     image_path = models.CharField(max_length=300)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,3 +52,10 @@ class Site(models.Model):
 
     def __str__(self):
         return "{}"
+
+
+@receiver(post_delete, sender=Site)
+def remove_file(sender, instance, *args, **kwargs):
+    file_path = os.path.join(settings.MEDIA_ROOT, instance.image_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)

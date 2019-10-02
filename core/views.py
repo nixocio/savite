@@ -8,15 +8,16 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options
+from django.http import Http404
 
 from core.forms import SiteForm
-from core.models import Site, Category
+from core.models import Category, Site
 from users.forms import CustomUserChangeForm, CustomUserCreationForm
-from django.db.models import Count
 
 
 def site_read(request):
@@ -39,8 +40,13 @@ def site_read(request):
     )
 
 
+@login_required
 def site_filter_category(request, category):
-    sites = Site.objects.filter(category__name=category)
+    category = get_object_or_404(Category, name=category)
+    try:
+        sites = Site.objects.filter(category__name=category)
+    except Site.DoesNotExist:
+        raise Http404("test")
     total = Site.objects.filter(category__name=category).count()
     total_categories = {category: total}
     return render(
@@ -73,7 +79,6 @@ def sites_create(request):
             url = form.cleaned_data["url"]
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
-            pprint(url)
             now = str(datetime.today().timestamp())
             image_name = "".join([now, "_image.png"])
             get_screen_shot.delay(url, image_name)
@@ -118,7 +123,7 @@ def site_delete(request, site_id):
 @shared_task
 def get_screen_shot(url, image_name, username=None):
     width = 680
-    height = 1200
+    height = 400
     options = ChromeOptions()
     options.headless = True
     driver = Chrome(options=options)
