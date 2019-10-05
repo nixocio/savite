@@ -1,20 +1,12 @@
 import os
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-
-# Career
-# Podcast
-# Productivity
-# Linux
-# Business
-# Python
-# Front-End
-# Back-End
-# Education
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -30,6 +22,10 @@ class Category(models.Model):
         return self.name
 
 
+def default_date():
+    return timezone.now() + timezone.timedelta(days=30)
+
+
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
     category = models.ForeignKey(
@@ -39,7 +35,12 @@ class Site(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    deadline = models.DateTimeField(blank=False)
+    deadline = models.DateTimeField(default=default_date, blank=False)
+    expired = models.BooleanField(default=False)
+
+    @property
+    def is_deadline_expired(self):
+        return self.deadline < timezone.now()
 
     @property
     def image_path_modified(self):

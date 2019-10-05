@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "(9_+!+c%%@guf1pok)ham%woztgv%r1fppdc=f=v5exly@o$*b"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True    
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -136,3 +136,5 @@ LOGOUT_REDIRECT_URL = "core:home"
 # Celery Stuff
 
 CELERY_BROKER_URL = "amqp://localhost"
+
+CELERY_TIMEZONE = "Asia/Makassar"
