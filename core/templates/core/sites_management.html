@@ -8,30 +8,32 @@
 
   <br>
   <br>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>URL</th>
-        <th>Category</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for site in sites %}
-      <tr>
-        <td><a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></td>
-        <td>{{ site.category }}</td>
-        <td>
-          <a href="{% url 'core:site_edit' site.id %}" class="btn btn-warning" role="button"
-            aria-pressed="true">Edit</a>
-          <a href="{% url 'core:site_delete' site.id %}" class="btn btn-danger" role="button"
-            aria-pressed="true">Del</a>
-        </td>
-      </tr>
-      {% endfor %}
 
-    </tbody>
-  </table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for site in sites %}
+        <tr>
+          <td><a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></td>
+          <td>{{ site.category }}</td>
+          <td>
+            <a href="{% url 'core:site_edit' site.id %}" class="btn btn-warning" role="button"
+              aria-pressed="true">Edit</a>
+            <a href="{% url 'core:site_delete' site.id %}" class="btn btn-danger" role="button"
+              aria-pressed="true">Del</a>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
 
 </div>
 

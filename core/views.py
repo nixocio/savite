@@ -122,7 +122,7 @@ def site_delete(request, site_id):
 
 @shared_task
 def get_screen_shot(url, image_name, username=None):
-    width = 680
+    width = 400
     height = 400
     options = ChromeOptions()
     options.headless = True
