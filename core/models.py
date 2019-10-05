@@ -37,6 +37,9 @@ class Site(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     deadline = models.DateTimeField(default=default_date, blank=False)
     expired = models.BooleanField(default=False)
+    
+
+    #TODO save verify expired is alredy true override save
 
     @property
     def is_deadline_expired(self):

@@ -22,13 +22,17 @@ from users.forms import CustomUserChangeForm, CustomUserCreationForm
 
 def site_read(request):
     sites = Site.objects.all()
+
+    non_expired_sites = Site.objects.filter(expired=False)
+    expired_sites= Site.objects.filter(expired=True).count()
+
+
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(category__name=category).count()
         if total > 0:
             total_categories.update({category.name: total})
-    pprint(total_categories)
     return render(
         request,
         "core/sites_read.html",
@@ -36,6 +40,7 @@ def site_read(request):
             "sites": sites,
             "total_categories": total_categories,
             "total_overview": sum(total_categories.values()),
+            "total_expired": expired_sites,
         },
     )
 
@@ -123,7 +128,7 @@ def site_delete(request, site_id):
 @shared_task
 def get_screen_shot(url, image_name, username=None):
     width = 400
-    height = 400
+    height = 600
     options = ChromeOptions()
     options.headless = True
     driver = Chrome(options=options)

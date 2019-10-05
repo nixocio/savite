@@ -14,14 +14,16 @@
         <tr>
           <th>URL</th>
           <th>Category</th>
+          <th>Expired</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {% for site in sites %}
         <tr>
-          <td><a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></td>
+          <td><a href={{ site.url }}>{{ site.url|truncatechars:35 }}</a></td>
           <td>{{ site.category }}</td>
+          <td>{{ site.expired }}</td>
           <td>
             <a href="{% url 'core:site_edit' site.id %}" class="btn btn-warning" role="button"
               aria-pressed="true">Edit</a>
