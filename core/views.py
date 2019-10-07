@@ -21,28 +21,27 @@ from users.forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 def site_read(request):
-    sites = Site.objects.all()
-
+    sites = Site.objects.filter().all()
     non_expired_sites = Site.objects.filter(expired=False)
-    expired_sites= Site.objects.filter(expired=True).count()
-
-
+    expired_sites = Site.objects.filter(expired=True).count()
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(category__name=category).count()
         if total > 0:
             total_categories.update({category.name: total})
-    return render(
-        request,
-        "core/sites_read.html",
-        {
-            "sites": sites,
-            "total_categories": total_categories,
-            "total_overview": sum(total_categories.values()),
-            "total_expired": expired_sites,
-        },
-    )
+        return render(
+            request,
+            "core/sites_read.html",
+            {
+                "sites": sites,
+                "total_categories": total_categories,
+                "total_overview": sum(total_categories.values()),
+                "total_expired": expired_sites,
+            },
+        )
+        # TODO Add page explaining what to do
+        # Perhaps add trending on a few sites...
 
 
 @login_required
@@ -70,7 +69,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("core:sites_read")
+            return redirect("core:home")
     else:
         form = CustomUserCreationForm()
     return render(request, "registration/signup.html", {"form": form})
@@ -127,7 +126,7 @@ def site_delete(request, site_id):
 
 @shared_task
 def get_screen_shot(url, image_name, username=None):
-    width = 400
+    idth = 400
     height = 600
     options = ChromeOptions()
     options.headless = True

@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald|Open+Sans&display=swap');
+.asteriskField {
+    display: none;
+}
+
+/* Navbar */
+
+.navbar {
+    background-color: #ffffff;
+    padding: 1.2rem;
+}
+
+.nav-link {
+    color: black;
+    text-transform: lowercase;
+    text-decoration-color: blueviolet;
+
+  text-decoration: underline;
+
+}
+
+.navbarlink {
+    color: #1c1d24;
+    text-transform: lowercase;
+}
+
+.navbarlink:hover {
+    color: #1369D5;
+}
+
+#navbartoggle {
+    color: #1c1d24;
+}
+
+/* endofnavbar */
+
+body {
+    background-color: #fefefe;
+    font-family: 'Oswald', sans-serif;
+}
+
+/* cards */
+
+
+
+/* endofcards */

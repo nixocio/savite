@@ -10,8 +10,9 @@ class DateInput(forms.DateInput):
 class SiteForm(forms.ModelForm):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
-        help_text="Please enter the Category of the Site.",
-        empty_label="",
+        help_text="Pick the category of the site.",
+        empty_label="All",
+        label="",
     )
     url = forms.URLField(
         max_length=200,

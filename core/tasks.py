@@ -2,6 +2,7 @@ from celery import task
 
 from core.models import Site
 
+
 @task(name="deadline_expired")
 def deadline_date():
     sites = Site.objects.all()
