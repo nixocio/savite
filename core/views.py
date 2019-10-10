@@ -17,7 +17,6 @@ from selenium.webdriver.firefox.options import Options
 
 from core.forms import SiteForm
 from core.models import Category, Site
-from users.forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 def site_read(request):
@@ -30,18 +29,18 @@ def site_read(request):
         total = Site.objects.filter(category__name=category).count()
         if total > 0:
             total_categories.update({category.name: total})
-        return render(
-            request,
-            "core/sites_read.html",
-            {
-                "sites": sites,
-                "total_categories": total_categories,
-                "total_overview": sum(total_categories.values()),
-                "total_expired": expired_sites,
-            },
-        )
-        # TODO Add page explaining what to do
-        # Perhaps add trending on a few sites...
+    return render(
+        request,
+        "core/sites_read.html",
+        {
+            "sites": sites,
+            "total_categories": total_categories,
+            "total_overview": sum(total_categories.values()),
+            "total_expired": expired_sites,
+        },
+    )
+    # TODO Add page explaining what to do
+    # Perhaps add trending on a few sites...
 
 
 @login_required
@@ -64,17 +63,6 @@ def site_filter_category(request, category):
     )
 
 
-def signup(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("core:home")
-    else:
-        form = CustomUserCreationForm()
-    return render(request, "registration/signup.html", {"form": form})
-
-
 @login_required
 def sites_create(request):
     if request.method == "POST":
@@ -88,11 +76,7 @@ def sites_create(request):
             get_screen_shot.delay(url, image_name)
 
             Site(
-                category=category,
-                deadline=deadline,
-                image_path=image_name,
-                url=url,
-                user=request.user,
+                category=category, deadline=deadline, image_path=image_name, url=url, user=request.user
             ).save()
 
             return redirect("core:site_management")
@@ -126,7 +110,7 @@ def site_delete(request, site_id):
 
 @shared_task
 def get_screen_shot(url, image_name, username=None):
-    idth = 400
+    width = 400
     height = 600
     options = ChromeOptions()
     options.headless = True

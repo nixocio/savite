@@ -13,8 +13,14 @@
                     {{ form|crispy }}
                     <button type="submit" class="btn btn-primary">Sign up</button>
                 </form>
+                <div class="pt-3">
+                    <small class="text-muted">
+                        Already Have An Account? <a class="ml-2" href="{% url 'users:login' %}">Sign In</a>
+                    </small>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}

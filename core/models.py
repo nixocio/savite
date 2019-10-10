@@ -28,9 +28,7 @@ def default_date():
 
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
-    category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="categories"
-    )
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="categories")
     image_path = models.CharField(max_length=300)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -14,11 +14,7 @@ class SiteForm(forms.ModelForm):
         empty_label="All",
         label="",
     )
-    url = forms.URLField(
-        max_length=200,
-        help_text="Please enter the URL of the site." "",
-        label="Site URL",
-    )
+    url = forms.URLField(max_length=200, help_text="Please enter the URL of the site." "", label="Site URL")
 
     class Meta:
         model = Site
