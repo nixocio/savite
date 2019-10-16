@@ -16,9 +16,5 @@ urlpatterns = [
         views.site_filter_category,
         name="site_filter",
     ),
-    path(
-        "site/general/management/",
-        views.site_management,
-        name="site_management",
-    ),
+    path("site/general/management/", views.site_management, name="site_management"),
 ]

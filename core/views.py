@@ -1,4 +1,5 @@
 import os
+import sys
 import urllib.parse as urlparse
 from datetime import datetime
 from pprint import pprint
@@ -26,12 +27,8 @@ def home(request):
 @login_required
 def site_read(request):
     sites = Site.objects.filter(user=request.user).all()
-    non_expired_sites = Site.objects.filter(
-        Q(user=request.user) & Q(expired=False)
-    )
-    expired_sites = Site.objects.filter(
-        Q(user=request.user) & Q(expired=True)
-    ).count()
+    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
+    expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=True)).count()
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
@@ -58,9 +55,7 @@ def site_read(request):
 def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
-        sites = Site.objects.filter(
-            Q(category__name=category) & Q(user=request.user)
-        )
+        sites = Site.objects.filter(Q(category__name=category) & Q(user=request.user))
     except Site.DoesNotExist:
         raise Http404("test")
     total = Site.objects.filter(
@@ -87,9 +82,9 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
-            image_name = "".join([now, "_image.png"])
-            get_screen_shot.delay(url, image_name)
-
+            image_name = "".join([request.user.username, "_", now, "_image.png"])
+            image_dir = create_user_dir(request.user.username)
+            get_screen_shot.delay(url, image_dir, image_name)
             Site(
                 category=category,
                 deadline=deadline,
@@ -117,6 +112,13 @@ def site_edit(request, site_id):
     form = SiteForm(request.user, request.POST or None, instance=site)
     if form.is_valid():
         form.save()
+        # TODO Add a new image for modified imaged
+        # now = str(datetime.today().timestamp())
+        # image_name = "".join(
+        #         [request.user.username, "_", now, "_image.png"]
+        #     )
+        # image_dir = create_user_dir(request.user.username)
+        # get_screen_shot.delay(url, image_dir, image_name)
         return redirect("core:site_management")
     return render(request, "core/site_create.html", {"form": form})
 
@@ -129,7 +131,7 @@ def site_delete(request, site_id):
 
 
 @shared_task
-def get_screen_shot(url, image_name, username=None):
+def get_screen_shot(url, image_dir, image_name):
     width = 400
     height = 600
     options = ChromeOptions()
@@ -137,9 +139,14 @@ def get_screen_shot(url, image_name, username=None):
     driver = Chrome(options=options)
     driver.get(url)
     driver.set_window_size(width, height)
-    img_dir = settings.MEDIA_ROOT
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
-    driver.save_screenshot(os.path.join(img_dir, image_name))
+    driver.save_screenshot(os.path.join(image_dir, image_name))
     driver.quit()
     return None
+
+
+# TODO cache this function
+def create_user_dir(username):
+    img_dir = os.path.join(settings.MEDIA_ROOT, username)
+    if not os.path.exists(img_dir):
+        os.makedirs(img_dir)
+    return img_dir
