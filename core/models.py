@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -27,10 +27,12 @@ def default_date():
 
 
 class Site(models.Model):
-    url = models.URLField(verbose_name="Site URL", unique=True, blank=False)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="categories")
+    url = models.URLField(verbose_name="Site URL", blank=False)
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT, related_name="categories"
+    )
     image_path = models.CharField(max_length=300)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deadline = models.DateTimeField(default=default_date, blank=False)
@@ -51,6 +53,7 @@ class Site(models.Model):
 
     class Meta:
         ordering = ("-modified_at",)
+        unique_together = ("user", "url", "category")
 
     def __str__(self):
         return "{}"
@@ -61,3 +64,7 @@ def remove_file(sender, instance, *args, **kwargs):
     file_path = os.path.join(settings.MEDIA_ROOT, instance.image_path)
     if os.path.exists(file_path):
         os.remove(file_path)
+
+
+# def get_upload_path(instance, filename):
+#     return os.path.join("account/avatars/", now().date().strftime("%Y/%m/%d"), filename)

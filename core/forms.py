@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
+from django.db.models import Q
 
 from core.models import Category, Site
 
@@ -14,9 +16,32 @@ class SiteForm(forms.ModelForm):
         empty_label="All",
         label="",
     )
-    url = forms.URLField(max_length=200, help_text="Please enter the URL of the site." "", label="Site URL")
+    url = forms.URLField(
+        max_length=200,
+        help_text="Please enter the URL of the site." "",
+        label="Site URL",
+    )
 
     class Meta:
         model = Site
         widgets = {"deadline": DateInput()}
+        unique_together = ("user", "url")
         fields = ("category", "url", "deadline")
+
+    def __init__(self, user=None, *args, **kwargs):
+        if user:
+            self.user = user
+        super(SiteForm, self).__init__(*args, **kwargs)
+
+    def clean_url(self):
+        url = self.cleaned_data["url"]
+        query = Site.objects.filter(Q(user=self.user) & Q(url=url)).all()
+        if query:
+            category = Site.objects.filter(
+                Q(user=self.user)
+                & Q(url=url)
+                & Q(category=self.cleaned_data["category"])
+            ).count()
+            if category:
+                raise ValidationError("URL already present in the database")
+        return url

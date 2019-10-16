@@ -10,6 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web_app.settings")
 django.setup()
 
 
+
 def populate_categories():
     categories = [
         "Back-End",

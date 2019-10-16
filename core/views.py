@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from selenium.webdriver import Chrome
@@ -19,14 +19,25 @@ from core.forms import SiteForm
 from core.models import Category, Site
 
 
+def home(request):
+    return render(request, "core/home.html")
+
+
+@login_required
 def site_read(request):
-    sites = Site.objects.filter().all()
-    non_expired_sites = Site.objects.filter(expired=False)
-    expired_sites = Site.objects.filter(expired=True).count()
+    sites = Site.objects.filter(user=request.user).all()
+    non_expired_sites = Site.objects.filter(
+        Q(user=request.user) & Q(expired=False)
+    )
+    expired_sites = Site.objects.filter(
+        Q(user=request.user) & Q(expired=True)
+    ).count()
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
-        total = Site.objects.filter(category__name=category).count()
+        total = Site.objects.filter(
+            Q(category__name=category) & Q(user=request.user)
+        ).count()
         if total > 0:
             total_categories.update({category.name: total})
     return render(
@@ -47,10 +58,14 @@ def site_read(request):
 def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
-        sites = Site.objects.filter(category__name=category)
+        sites = Site.objects.filter(
+            Q(category__name=category) & Q(user=request.user)
+        )
     except Site.DoesNotExist:
         raise Http404("test")
-    total = Site.objects.filter(category__name=category).count()
+    total = Site.objects.filter(
+        Q(category__name=category) & Q(user=request.user)
+    ).count()
     total_categories = {category: total}
     return render(
         request,
@@ -66,7 +81,7 @@ def site_filter_category(request, category):
 @login_required
 def sites_create(request):
     if request.method == "POST":
-        form = SiteForm(request.POST)
+        form = SiteForm(request.user, request.POST)
         if form.is_valid():
             url = form.cleaned_data["url"]
             category = form.cleaned_data["category"]
@@ -76,12 +91,16 @@ def sites_create(request):
             get_screen_shot.delay(url, image_name)
 
             Site(
-                category=category, deadline=deadline, image_path=image_name, url=url, user=request.user
+                category=category,
+                deadline=deadline,
+                image_path=image_name,
+                url=url,
+                user=request.user,
             ).save()
 
             return redirect("core:site_management")
     else:
-        form = SiteForm()
+        form = SiteForm(request.user)
     return render(request, "core/site_create.html", {"form": form})
 
 
@@ -94,7 +113,8 @@ def site_management(request):
 @login_required
 def site_edit(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
-    form = SiteForm(request.POST or None, instance=site)
+    user = request.user
+    form = SiteForm(request.user, request.POST or None, instance=site)
     if form.is_valid():
         form.save()
         return redirect("core:site_management")
