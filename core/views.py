@@ -15,7 +15,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options
 
-from core.forms import SiteForm
+from core.forms import SiteForm, SiteEditForm
 from core.models import Category, Site
 
 
@@ -99,7 +99,6 @@ def sites_create(request):
             now = str(datetime.today().timestamp())
             image_name = "".join(
                 [request.user.username, "_", now, "_image.png"])
-            print(image_name)
             image_dir = create_user_dir(request.user.username)
             get_screen_shot.delay(url, image_dir, image_name)
             Site(
@@ -121,7 +120,7 @@ def site_management(request):
 def site_edit(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
     user = request.user
-    form = SiteForm(request.user, request.POST or None, instance=site)
+    form = SiteEditForm(request.POST or None, instance=site)
     if form.is_valid():
         form.save()
         return redirect("core:site_management")
