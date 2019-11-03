@@ -1,5 +1,4 @@
 import os
-import sys
 import urllib.parse as urlparse
 from datetime import datetime
 from pprint import pprint
@@ -26,14 +25,18 @@ def home(request):
 
 @login_required
 def site_read(request):
-    sites = Site.objects.filter(user=request.user).all()
-    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
-    expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=True)).count()
+    sites = Site.objects.filter(user=request.user)
+    non_expired_sites = Site.objects.filter(
+        Q(user=request.user) & Q(expired=False))
+    expired_sites_count = Site.objects.filter(
+        Q(user=request.user) & Q(expired=True)).count()
+    expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=True))
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(
-            Q(category__name=category) & Q(user=request.user)
+            Q(category__name=category) & Q(
+                user=request.user) & Q(expired=False)
         ).count()
         if total > 0:
             total_categories.update({category.name: total})
@@ -41,10 +44,10 @@ def site_read(request):
         request,
         "core/sites_read.html",
         {
-            "sites": sites,
+            "sites": non_expired_sites,
             "total_categories": total_categories,
-            "total_overview": sum(total_categories.values()),
-            "total_expired": expired_sites,
+            "total_overview": sum(total_categories.values()) + expired_sites_count,
+            "total_expired": expired_sites_count,
         },
     )
     # TODO Add page explaining what to do
@@ -55,12 +58,12 @@ def site_read(request):
 def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
-        sites = Site.objects.filter(Q(category__name=category) & Q(user=request.user))
+        sites = Site.objects.filter(Q(category__name=category) & Q(
+            user=request.user) & Q(expired=False))
     except Site.DoesNotExist:
-        raise Http404("test")
-    total = Site.objects.filter(
-        Q(category__name=category) & Q(user=request.user)
-    ).count()
+        raise Http404("Not a valid category")
+    total = Site.objects.filter(Q(category__name=category) & Q(
+        user=request.user) & Q(expired=False)).count()
     total_categories = {category: total}
     return render(
         request,
@@ -74,6 +77,18 @@ def site_filter_category(request, category):
 
 
 @login_required
+def site_filter_expired(request):
+    sites = Site.objects.filter(Q(user=request.user) & Q(expired=True))
+    total = Site.objects.filter(Q(expired=True) & Q(user=request.user)).count()
+    return render(
+        request,
+        "core/sites_read.html",
+        {"sites": sites, "total_categories": {},
+            "total_expired": total, "total_overview": total},
+    )
+
+
+@login_required
 def sites_create(request):
     if request.method == "POST":
         form = SiteForm(request.user, request.POST)
@@ -82,17 +97,14 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
-            image_name = "".join([request.user.username, "_", now, "_image.png"])
+            image_name = "".join(
+                [request.user.username, "_", now, "_image.png"])
+            print(image_name)
             image_dir = create_user_dir(request.user.username)
             get_screen_shot.delay(url, image_dir, image_name)
             Site(
-                category=category,
-                deadline=deadline,
-                image_path=image_name,
-                url=url,
-                user=request.user,
+                category=category, deadline=deadline, image_path=image_name, url=url, user=request.user
             ).save()
-
             return redirect("core:site_management")
     else:
         form = SiteForm(request.user)
@@ -112,13 +124,6 @@ def site_edit(request, site_id):
     form = SiteForm(request.user, request.POST or None, instance=site)
     if form.is_valid():
         form.save()
-        # TODO Add a new image for modified imaged
-        # now = str(datetime.today().timestamp())
-        # image_name = "".join(
-        #         [request.user.username, "_", now, "_image.png"]
-        #     )
-        # image_dir = create_user_dir(request.user.username)
-        # get_screen_shot.delay(url, image_dir, image_name)
         return redirect("core:site_management")
     return render(request, "core/site_create.html", {"form": form})
 
@@ -144,9 +149,8 @@ def get_screen_shot(url, image_dir, image_name):
     return None
 
 
-# TODO cache this function
 def create_user_dir(username):
-    img_dir = os.path.join(settings.MEDIA_ROOT, username)
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
-    return img_dir
+    image_dir = os.path.join(settings.MEDIA_ROOT, username)
+    if not os.path.exists(image_dir):
+        os.makedirs(image_dir)
+    return image_dir

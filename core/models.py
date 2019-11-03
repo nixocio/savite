@@ -38,12 +38,9 @@ class Site(models.Model):
     deadline = models.DateTimeField(default=default_date, blank=False)
     expired = models.BooleanField(default=False)
 
-    # TODO save verify expired is alredy true override save
-    # TODO different users can have the same URL
-
     @property
     def is_deadline_expired(self):
-        return self.deadline < timezone.now()
+        return self.deadline < timezone.localtime(timezone.now())
 
     @property
     def image_path_modified(self):
@@ -60,7 +57,7 @@ class Site(models.Model):
         unique_together = ("user", "url", "category")
 
     def __str__(self):
-        return "{}"
+        return self.url
 
 
 @receiver(post_delete, sender=Site)
@@ -72,5 +69,3 @@ def remove_file(sender, instance, *args, **kwargs):
         os.remove(file_path)
 
 
-# def get_upload_path(instance, filename):
-#     return os.path.join("account/avatars/", now().date().strftime("%Y/%m/%d"), filename)
