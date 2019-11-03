@@ -26,17 +26,14 @@ def home(request):
 @login_required
 def site_read(request):
     sites = Site.objects.filter(user=request.user)
-    non_expired_sites = Site.objects.filter(
-        Q(user=request.user) & Q(expired=False))
-    expired_sites_count = Site.objects.filter(
-        Q(user=request.user) & Q(expired=True)).count()
+    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
+    expired_sites_count = Site.objects.filter(Q(user=request.user) & Q(expired=True)).count()
     expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=True))
     categories = Category.objects.all()
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(
-            Q(category__name=category) & Q(
-                user=request.user) & Q(expired=False)
+            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
         ).count()
         if total > 0:
             total_categories.update({category.name: total})
@@ -58,12 +55,10 @@ def site_read(request):
 def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
-        sites = Site.objects.filter(Q(category__name=category) & Q(
-            user=request.user) & Q(expired=False))
+        sites = Site.objects.filter(Q(category__name=category) & Q(user=request.user) & Q(expired=False))
     except Site.DoesNotExist:
         raise Http404("Not a valid category")
-    total = Site.objects.filter(Q(category__name=category) & Q(
-        user=request.user) & Q(expired=False)).count()
+    total = Site.objects.filter(Q(category__name=category) & Q(user=request.user) & Q(expired=False)).count()
     total_categories = {category: total}
     return render(
         request,
@@ -83,8 +78,7 @@ def site_filter_expired(request):
     return render(
         request,
         "core/sites_read.html",
-        {"sites": sites, "total_categories": {},
-            "total_expired": total, "total_overview": total},
+        {"sites": sites, "total_categories": {}, "total_expired": total, "total_overview": total},
     )
 
 
@@ -97,8 +91,7 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
-            image_name = "".join(
-                [request.user.username, "_", now, "_image.png"])
+            image_name = "".join([request.user.username, "_", now, "_image.png"])
             image_dir = create_user_dir(request.user.username)
             get_screen_shot.delay(url, image_dir, image_name)
             Site(

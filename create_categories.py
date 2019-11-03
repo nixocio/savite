@@ -8,6 +8,7 @@ django.setup()
 
 from core.models import Category
 
+
 def populate_categories():
     categories = [
         "Back-End",

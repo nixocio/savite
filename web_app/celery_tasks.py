@@ -16,8 +16,5 @@ def debug_task(self):
 
 
 celery_app.conf.beat_schedule = {
-    "check-expiration-daily": {
-        "task": "deadline_expired",
-        "schedule": crontab(minute="*"),
-    }
+    "check-expiration-daily": {"task": "deadline_expired", "schedule": crontab(minute="*")}
 }

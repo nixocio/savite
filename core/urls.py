@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import include, path
- 
+
 from core import views
- 
+
 app_name = "core"
- 
+
 urlpatterns = [
     path("", views.home, name="home"),
     path("site/read", views.site_read, name="site_read"),
