@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'main.html' %}
 
 {% block content %}
 
@@ -9,8 +9,12 @@
                 {% for site in sites %}
                 <div class="col-md-6">
                     <div class="card mb-3">
-                        <div class="card-header card-custom">
+                        <div class="card-header card-custom text-center">
                             <a href={{ site.url }}>{{ site.url|truncatechars:40 }}</a>
+
+                            <!-- <h6 class="card-subtitle mb-2 text-muted">{{ site.category }}</h6>
+                            <small class="text-muted"><strong class="text-black">Category:
+                                </strong>{{ site.category }}</small> -->
                         </div>
                         <div class="card-body">
                             <img src="{{ MEDIA_URL }}{{ site.image_path_modified }}" class="card-img-top img-fluid"

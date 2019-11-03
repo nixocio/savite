@@ -121,7 +121,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -138,13 +137,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # LOGIN_URL = reverse_lazy("users:login")
-
 LOGIN_REDIRECT_URL = "core:site_read"
 
 LOGOUT_REDIRECT_URL = "core:home"
 
 # Celery Stuff
-
 CELERY_BROKER_URL = "amqp://localhost"
 
 CELERY_TIMEZONE = "Asia/Makassar"
@@ -153,3 +150,9 @@ CELERY_TIMEZONE = "Asia/Makassar"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]
 }
+
+
+# Email
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")

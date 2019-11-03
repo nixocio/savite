@@ -6,24 +6,25 @@
 /* Navbar */
 
 .navbar {
-    background-color: #ffffff;
+    background-color: #fefefe;
     padding: 1.2rem;
 }
 
 .nav-link {
     color: black;
-    text-transform: lowercase;
+    /* text-transform: lowercase; */
     text-decoration-color: blueviolet;
     text-decoration: underline;
 }
 
 .navbarlink {
     color: #1c1d24;
-    text-transform: lowercase;
+    /* text-transform: lowercase; */
 }
 
 .navbarlink:hover {
-    color: #1369D5;
+    /* color: #1369D5i; */
+    color: #d3d3f2;
 }
 
 #navbartoggle {
@@ -47,17 +48,11 @@ body {
 
 .card-body {
     background-color: #fefefe;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.list-group-item {
-    background-color: #fefefe;
-    border: 2;
-    border-color: #E8EBEE;
+    font-family: 'Oswald', sans-serif;
 }
 
 .card {
-    border: 2;
+    border: 20;
     border-color: #E8EBEE;
 }
 
@@ -66,7 +61,7 @@ body {
 /* anchors */
 
 a {
-    color: black;
+    color: #38364D;
 }
 
 a:hover {
@@ -100,4 +95,41 @@ a:hover {
 
 .tablecenter-modify {
     text-align: center;
+}
+
+/* buttons */
+
+.btn-outline-primary {
+    color: #38364D;
+    border-color: #38364D;
+    border-radius: .15rem;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    border-color: #38364D;
+    background-color: #38364D;
+}
+
+.btn-primary {
+    border-radius: .15rem;
+}
+
+.btn-secondary {
+    color: white;
+    border-color: #38364D;
+    background-color: #38364D;
+    border-radius: .15rem;
+}
+
+.btn-secondary:hover {
+    color: white;
+    border-color: rgb(45, 44, 54);
+    background-color: rgb(45, 44, 54);
+}
+
+/* endofbuttons */
+
+#password-reset {
+    padding-top: 100px;
 }

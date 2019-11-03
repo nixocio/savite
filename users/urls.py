@@ -21,16 +21,26 @@ urlpatterns = [
     ),
     path("profile/", user_views.profile, name="profile"),
     path(
-        "password-reset/",
-        auth_views.PasswordResetView.as_view(),
-        name="password_reset",
+        "password-change/",
+        auth_views.PasswordChangeView.as_view(
+            template_name="users/password_change.html",
+            success_url="/users/password-change/done/",
+        ),
+        name="password_change",
     ),
     path(
-        "password-reset/done/",
-        auth_views.PasswordResetDoneView.as_view(
-            template_name="users/password_reset_done.html"
+        "password-change/done/",
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name="users/password_change_done.html"
         ),
-        name="password_reset_done",
+        name="password_change_done",
+    ),
+    path(
+        "password-reset-complete/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="users/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
     ),
     path(
         "password-reset-confirm/<uidb64>/<token>/",
@@ -40,10 +50,18 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
     path(
-        "password-reset-complete/",
-        auth_views.PasswordResetCompleteView.as_view(
-            template_name="users/password_reset_complete.html"
+        "password-reset/",
+        auth_views.PasswordResetView.as_view(
+            template_name="users/password_reset.html",
+            success_url="/users/password-reset/done/",
         ),
-        name="password_reset_complete",
+        name="password_reset",
+    ),
+    path(
+        "password-reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="users/password_reset_done.html"
+        ),
+        name="password_reset_done",
     ),
 ]
