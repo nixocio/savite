@@ -17,8 +17,12 @@ class SiteForm(forms.ModelForm):
         empty_label="All",
         label="",
     )
+
     url = forms.URLField(
-        max_length=200, initial="https://", help_text="Please enter the URL of the site." "", label="Site URL"
+        max_length=200,
+        initial="https://",
+        help_text="Please enter the URL of the site." "",
+        label="Site URL",
     )
 
     class Meta:
@@ -52,7 +56,11 @@ class SiteEditForm(forms.ModelForm):
         empty_label="All",
         label="",
     )
-    url = forms.URLField(max_length=200, help_text="Please enter the URL of the site." "", label="Site URL")
+    url = forms.URLField(
+        max_length=200,
+        help_text="Please enter the URL of the site." "",
+        label="Site URL",
+    )
 
     class Meta:
         model = Site
@@ -61,7 +69,7 @@ class SiteEditForm(forms.ModelForm):
         fields = ("category", "url", "deadline")
 
     def __init__(self, *args, **kwargs):
-        super(SiteEditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["url"].disabled = True
 
     def clean_deadline(self):

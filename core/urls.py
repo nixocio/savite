@@ -11,7 +11,11 @@ urlpatterns = [
     path("site/create/", views.sites_create, name="site_create"),
     path("site/delete/<int:site_id>/", views.site_delete, name="site_delete"),
     path("site/edit/<int:site_id>/", views.site_edit, name="site_edit"),
-    path("site/filter/category/<str:category>/", views.site_filter_category, name="site_filter_category"),
+    path(
+        "site/filter/category/<str:category>/",
+        views.site_filter_category,
+        name="site_filter_category",
+    ),
     path("site/filter/expired/", views.site_filter_expired, name="site_filter_expired"),
     path("site/general/management/", views.site_management, name="site_management"),
 ]
