@@ -1,4 +1,6 @@
-from celery import task
+from celery import shared_task, task
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 from core.models import Site
 

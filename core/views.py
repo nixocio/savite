@@ -3,7 +3,6 @@ import urllib.parse as urlparse
 from datetime import datetime
 from pprint import pprint
 
-from celery import shared_task
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -11,9 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from selenium.webdriver import Chrome
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options
 
 from core.forms import SiteEditForm, SiteForm
 from core.models import Category, Site
@@ -103,8 +99,6 @@ def sites_create(request):
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
             image_name = "".join([request.user.username, "_", now, "_image.png"])
-            image_dir = create_user_dir(request.user.username)
-            get_screen_shot.delay(url, image_dir, image_name)
             Site(
                 category=category,
                 deadline=deadline,
@@ -142,22 +136,22 @@ def site_delete(request, site_id):
     return redirect("core:site_management")
 
 
-@shared_task
-def get_screen_shot(url, image_dir, image_name):
-    width = 400
-    height = 600
-    options = ChromeOptions()
-    options.headless = True
-    driver = Chrome(options=options)
-    driver.get(url)
-    driver.set_window_size(width, height)
-    driver.save_screenshot(os.path.join(image_dir, image_name))
-    driver.quit()
-    return None
+# @shared_task
+# def get_screen_shot(url, image_dir, image_name):
+#     width = 400
+#     height = 600
+#     options = ChromeOptions()
+#     options.headless = True
+#     driver = Chrome(options=options)
+#     driver.get(url)
+#     driver.set_window_size(width, height)
+#     driver.save_screenshot(os.path.join(image_dir, image_name))
+#     driver.quit()
+#     return None
 
 
-def create_user_dir(username):
-    image_dir = os.path.join(settings.MEDIA_ROOT, username)
-    if not os.path.exists(image_dir):
-        os.makedirs(image_dir)
-    return image_dir
+# def create_user_dir(username):
+#     image_dir = os.path.join(settings.MEDIA_ROOT, username)
+#     if not os.path.exists(image_dir):
+#         os.makedirs(image_dir)
+#     return image_dir
