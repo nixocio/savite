@@ -30,7 +30,10 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("modified_at", models.DateTimeField(auto_now=True)),
             ],
-            options={"verbose_name_plural": "categories", "ordering": ("-created_at",)},
+            options={
+                "verbose_name_plural": "categories",
+                "ordering": ("-created_at",),
+            },
         ),
         migrations.CreateModel(
             name="Site",
@@ -48,7 +51,10 @@ class Migration(migrations.Migration):
                 ("image_path", models.CharField(max_length=300)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("modified_at", models.DateTimeField(auto_now=True)),
-                ("deadline", models.DateTimeField(default=core.models.default_date)),
+                (
+                    "deadline",
+                    models.DateTimeField(default=core.models.default_date),
+                ),
                 ("expired", models.BooleanField(default=False)),
                 (
                     "category",

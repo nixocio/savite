@@ -15,7 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="category",
             name="name",
-            field=models.CharField(blank=True, max_length=50, null=True, unique=True),
+            field=models.CharField(
+                blank=True, max_length=50, null=True, unique=True
+            ),
         ),
-        migrations.AlterUniqueTogether(name="site", unique_together={("user", "url")}),
+        migrations.AlterUniqueTogether(
+            name="site", unique_together={("user", "url")}
+        ),
     ]

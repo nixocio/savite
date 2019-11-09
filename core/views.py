@@ -1,7 +1,4 @@
-import os
-import urllib.parse as urlparse
 from datetime import datetime
-from pprint import pprint
 
 from django.conf import settings
 from django.contrib import messages
@@ -22,7 +19,9 @@ def home(request):
 @login_required
 def site_read(request):
     sites = Site.objects.filter(user=request.user)
-    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
+    non_expired_sites = Site.objects.filter(
+        Q(user=request.user) & Q(expired=False)
+    )
     expired_sites_count = Site.objects.filter(
         Q(user=request.user) & Q(expired=True)
     ).count()
@@ -31,7 +30,9 @@ def site_read(request):
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(
-            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
+            Q(category__name=category)
+            & Q(user=request.user)
+            & Q(expired=False)
         ).count()
         if total > 0:
             total_categories.update({category.name: total})
@@ -41,7 +42,8 @@ def site_read(request):
         {
             "sites": non_expired_sites,
             "total_categories": total_categories,
-            "total_overview": sum(total_categories.values()) + expired_sites_count,
+            "total_overview": sum(total_categories.values())
+            + expired_sites_count,
             "total_expired": expired_sites_count,
         },
     )
@@ -54,7 +56,9 @@ def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
         sites = Site.objects.filter(
-            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
+            Q(category__name=category)
+            & Q(user=request.user)
+            & Q(expired=False)
         )
     except Site.DoesNotExist:
         raise Http404("Not a valid category")
@@ -98,7 +102,9 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
-            image_name = "".join([request.user.username, "_", now, "_image.png"])
+            image_name = "".join(
+                [request.user.username, "_", now, "_image.png"]
+            )
             Site(
                 category=category,
                 deadline=deadline,
