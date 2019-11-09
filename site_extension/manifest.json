@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "Savite",
+    "version": "0.1",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "main.html"
+    },
+    "permissions": [
+        "activeTab"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    }
+}
