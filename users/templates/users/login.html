@@ -10,20 +10,14 @@
         <div class="col-md-8">
             <div class="my-5 py-md-3 py-sm-0">
                 <p class="display-4">Log in</p>
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
+                {% include "messages.html" %}
                 <form method="post">
                     {% csrf_token %}
-                    {{ form|crispy }}
-                    <input type="submit" class="btn btn-primary" value="Login">
-                    <small class="ml-2 mr-auto">
-                        <a href="{% url 'users:password_reset' %} ">Forgot password?</a>
-                    </small>
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-primary" value="Login">
+                <small class="ml-2 mr-auto">
+                    <a href="{% url 'users:password_reset' %} ">Forgot password?</a>
+                </small>
                 </form>
             </div>
         </div>
