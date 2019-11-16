@@ -1,6 +1,8 @@
 {% extends 'main.html' %}
 
 {% block content %}
+
+{% if sites %}
 <br>
 <div class="container">
     <div class="row">
@@ -60,6 +62,10 @@
     </div>
 </div>
 
+{% else %}
 
+{% include "core/content.html" %}
+
+{% endif %}
 
 {% endblock %}

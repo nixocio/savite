@@ -22,13 +22,9 @@ def create_site(request):
         serializer = SiteSerializer(data=request.data)
         if serializer.is_valid():
             now = str(datetime.today().timestamp())
-            image_name = "".join(
-                [request.user.username, "_", now, "_image.png"]
-            )
+            image_name = "".join([request.user.username, "_", now, "_image.png"])
             Site(
-                category=Category.objects.get(
-                    name=serializer.data["category"]
-                ),
+                category=Category.objects.get(name=serializer.data["category"]),
                 deadline=default_date(),
                 image_path=image_name,
                 url=serializer.data["url"],

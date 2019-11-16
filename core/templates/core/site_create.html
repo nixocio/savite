@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container">
+    {% include "messages.html" %}
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}

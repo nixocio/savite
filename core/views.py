@@ -13,15 +13,15 @@ from core.models import Category, Site
 
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect("core:site_read")
     return render(request, "core/home.html")
 
 
 @login_required
 def site_read(request):
     sites = Site.objects.filter(user=request.user)
-    non_expired_sites = Site.objects.filter(
-        Q(user=request.user) & Q(expired=False)
-    )
+    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
     expired_sites_count = Site.objects.filter(
         Q(user=request.user) & Q(expired=True)
     ).count()
@@ -30,9 +30,7 @@ def site_read(request):
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(
-            Q(category__name=category)
-            & Q(user=request.user)
-            & Q(expired=False)
+            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
         ).count()
         if total > 0:
             total_categories.update({category.name: total})
@@ -42,13 +40,11 @@ def site_read(request):
         {
             "sites": non_expired_sites,
             "total_categories": total_categories,
-            "total_overview": sum(total_categories.values())
-            + expired_sites_count,
+            "total_overview": sum(total_categories.values()) + expired_sites_count,
             "total_expired": expired_sites_count,
         },
     )
-    # TODO Add page explaining what to do
-    # Perhaps add trending on a few sites...
+    # TODO Perhaps add trending on a few sites...
 
 
 @login_required
@@ -56,9 +52,7 @@ def site_filter_category(request, category):
     category = get_object_or_404(Category, name=category)
     try:
         sites = Site.objects.filter(
-            Q(category__name=category)
-            & Q(user=request.user)
-            & Q(expired=False)
+            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
         )
     except Site.DoesNotExist:
         raise Http404("Not a valid category")
@@ -102,9 +96,7 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().timestamp())
-            image_name = "".join(
-                [request.user.username, "_", now, "_image.png"]
-            )
+            image_name = "".join([request.user.username, "_", now, "_image.png"])
             Site(
                 category=category,
                 deadline=deadline,
@@ -112,6 +104,7 @@ def sites_create(request):
                 url=url,
                 user=request.user,
             ).save()
+            messages.success(request, "Entry sucessfully saved - Saving a screen shot")
             return redirect("core:site_management")
     else:
         form = SiteForm(request.user)
@@ -131,6 +124,7 @@ def site_edit(request, site_id):
     form = SiteEditForm(request.POST or None, instance=site)
     if form.is_valid():
         form.save()
+        messages.success(request, "Entry sucessfully modified")
         return redirect("core:site_management")
     return render(request, "core/site_create.html", {"form": form})
 

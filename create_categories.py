@@ -1,25 +1,24 @@
 import os
 
-import django
-
-from core.models import Category
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web_app.settings")
 
+import django
 
 django.setup()
+
+from core.models import Category
 
 
 def populate_categories():
     categories = [
         "Back-End",
+        "Open Source",
         "Business",
         "Career",
         "Economy",
         "Education",
         "Front-End",
         "JavaScript",
-        "Learning",
         "Linux",
         "Music",
         "Must Read",

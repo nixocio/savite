@@ -16,14 +16,6 @@ urlpatterns = [
         views.site_filter_category,
         name="site_filter_category",
     ),
-    path(
-        "site/filter/expired/",
-        views.site_filter_expired,
-        name="site_filter_expired",
-    ),
-    path(
-        "site/general/management/",
-        views.site_management,
-        name="site_management",
-    ),
+    path("site/filter/expired/", views.site_filter_expired, name="site_filter_expired"),
+    path("site/general/management/", views.site_management, name="site_management"),
 ]

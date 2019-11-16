@@ -49,8 +49,7 @@ class Site(models.Model):
     def image_path_modified(self):
         if os.path.isfile(
             os.path.join(
-                settings.MEDIA_ROOT,
-                os.path.join(self.user.username, self.image_path),
+                settings.MEDIA_ROOT, os.path.join(self.user.username, self.image_path)
             )
         ):
             return os.path.join(self.user.username, self.image_path)
@@ -76,8 +75,7 @@ class Site(models.Model):
 @receiver(post_delete, sender=Site)
 def remove_file(sender, instance, *args, **kwargs):
     file_path = os.path.join(
-        settings.MEDIA_ROOT,
-        os.path.join(instance.user.username, instance.image_path),
+        settings.MEDIA_ROOT, os.path.join(instance.user.username, instance.image_path)
     )
     if os.path.exists(file_path):
         os.remove(file_path)
