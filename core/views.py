@@ -95,7 +95,7 @@ def sites_create(request):
             url = form.cleaned_data["url"]
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
-            now = str(datetime.today().timestamp())
+            now = str(datetime.today().strftime("%a%b%d%H:%M:%S%Y"))
             image_name = "".join([request.user.username, "_", now, "_image.png"])
             Site(
                 category=category,
@@ -133,25 +133,5 @@ def site_edit(request, site_id):
 def site_delete(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
     site.delete()
+    messages.success(request, "Entry sucessfully deleted.")
     return redirect("core:site_management")
-
-
-# @shared_task
-# def get_screen_shot(url, image_dir, image_name):
-#     width = 400
-#     height = 600
-#     options = ChromeOptions()
-#     options.headless = True
-#     driver = Chrome(options=options)
-#     driver.get(url)
-#     driver.set_window_size(width, height)
-#     driver.save_screenshot(os.path.join(image_dir, image_name))
-#     driver.quit()
-#     return None
-
-
-# def create_user_dir(username):
-#     image_dir = os.path.join(settings.MEDIA_ROOT, username)
-#     if not os.path.exists(image_dir):
-#         os.makedirs(image_dir)
-#     return image_dir

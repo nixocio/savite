@@ -1,12 +1,14 @@
 import os
 
+import django
+
+from core.models import Category
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web_app.settings")
 
-import django
 
 django.setup()
 
-from core.models import Category
 
 
 def populate_categories():
@@ -18,6 +20,7 @@ def populate_categories():
         "Economy",
         "Education",
         "Front-End",
+        "Web",
         "JavaScript",
         "Linux",
         "Music",

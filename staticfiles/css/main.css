@@ -6,13 +6,13 @@
 /* Navbar */
 
 .navbar {
-    background-color: #ffffff;
+    background-color: #fefefe;
     padding: 1.2rem;
 }
 
 .nav-link {
     color: black;
-    text-transform: lowercase;
+    /* text-transform: lowercase; */
     text-decoration-color: blueviolet;
     text-decoration: underline;
 }
@@ -23,7 +23,8 @@
 }
 
 .navbarlink:hover {
-    color: #1369D5;
+    /* color: #1369D5i; */
+    color: #d3d3f2;
 }
 
 #navbartoggle {
@@ -47,19 +48,12 @@ body {
 
 .card-body {
     background-color: #fefefe;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.list-group-item {
-    background-color: #fefefe;
-    border: 2;
-    border-color: #E8EBEE;
+    font-family: 'Oswald', sans-serif;
 }
 
 .card {
-    border: 2;
+    border: 20;
     border-color: #E8EBEE;
-    font-family: 'Oswald', sans-serif;
 }
 
 /* endofcards */
@@ -135,3 +129,11 @@ a:hover {
 }
 
 /* endofbuttons */
+
+#password-reset {
+    padding-top: 100px;
+}
+
+#position-fixed {
+    color: #3b5998;
+}

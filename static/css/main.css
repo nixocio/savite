@@ -58,6 +58,10 @@ body {
 
 /* endofcards */
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lato', sans-serif;
+}
+
 /* anchors */
 
 a {
@@ -91,6 +95,11 @@ a:hover {
 
 .tablecenter th {
     text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .tablecenter-modify {
@@ -132,4 +141,21 @@ a:hover {
 
 #password-reset {
     padding-top: 100px;
+}
+
+#position-fixed {
+    color: #3b5998;
+}
+
+.icon-text {
+    padding: 0px 25px 25px 0px;
+}
+
+h4.txt-tl {
+    font-size: 24px;
+    line-height: 1.35;
+}
+
+.txt-para {
+    color: #38364D;
 }

@@ -29,8 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CORS_ORIGIN_ALLOW_ALL = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +42,6 @@ INSTALLED_APPS = [
     "crispy_forms",
     "users.apps.UsersConfig",
     "core",
-    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -140,10 +137,11 @@ LOGOUT_REDIRECT_URL = "core:home"
 # Celery Stuff
 CELERY_BROKER_URL = "amqp://localhost"
 
-CELERY_TIMEZONE = "Asia/Makassar"
+CELERY_TIMEZONE = "America/New_York"
 
 # REST Stuff
-REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
+REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": [
+    "rest_framework.permissions.AllowAny"]}
 
 
 # Email
