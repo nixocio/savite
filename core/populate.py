@@ -1,25 +1,14 @@
-from core.models import Category
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from users.models import Profile
-
-
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_profile(sender, instance, **kwargs):
-    instance.profile.save()
+from core.models import Category
 
 
 @receiver(post_save, sender=User)
 def init_new_user(instance, created, **kwargs):
     if created:
+        print("post_save was called")
         categories = [
             "Back-End",
             "Business",
@@ -40,3 +29,4 @@ def init_new_user(instance, created, **kwargs):
         ]
         for category in categories:
             Category.objects.create(name=category, user=instance)
+            instance.category.save()

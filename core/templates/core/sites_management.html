@@ -1,11 +1,10 @@
-{% extends 'main.html' %}
-{% block content %}
+{% extends 'main.html' %} {% block content %}
 
 <div class="container">
-  <br>
-  <a href="{% url 'core:site_create' %}" class="btn btn-success" role="button" aria-pressed="true">Add favorites</a>
-  <br>
-  <br>
+  <br />
+  <a href="{% url 'core:site_create' %}" class="btn btn-success" role="button" aria-pressed="true">Add Favorites</a>
+  <br />
+  <br />
   {% include "messages.html" %}
   <table class="tablecenter table table-striped table-bordered">
     <thead>
@@ -21,7 +20,7 @@
       {% for site in sites %}
       <tr>
         <td><a href={{ site.url }}>{{ site.url|truncatechars:40 }}</a></td>
-        <td class="tablecenter-modify">{{ site.category }}</td>
+        <td class=" tablecenter-modify">{{ site.category }}</td>
         <td class="tablecenter-modify">{{ site.created_at|date:"M/d/Y" }}</td>
         {% if site.expired is True %}
         <td class="tablecenter-modify">Yes</td>
@@ -34,10 +33,8 @@
         </td>
       </tr>
       {% endfor %}
-
     </tbody>
   </table>
 </div>
-
 
 {% endblock %}

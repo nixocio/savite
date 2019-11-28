@@ -1,29 +1,23 @@
-{% extends "main.html" %}
-{% load crispy_forms_tags %}
-
-{% block content %}
+{% extends "main.html" %} {% load crispy_forms_tags %} {% block content %}
 
 <div class="container my-4">
-    <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8">
-            <div class="my-5 py-md-3 py-sm-0">
-                <p class="display-4">Log in</p>
-                {% include "messages.html" %}
-                <form method="post">
-                    {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" class="btn btn-primary" value="Login">
-                <small class="ml-2 mr-auto">
-                    <a href="{% url 'users:password_reset' %} ">Forgot password?</a>
-                </small>
-                </form>
-            </div>
-        </div>
-        <div class="col-md-2">
-        </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="my-5 py-md-3 py-sm-0">
+        <p class="display-4">Log in</p>
+        {% include "messages.html" %}
+        <form method="post">
+          {% csrf_token %} {{ form|crispy }}
+          <input type="submit" class="btn btn-primary" value="Login" />
+          <small class="ml-2 mr-auto">
+            <a href="{% url 'users:password_reset' %} ">Forgot password?</a>
+          </small>
+        </form>
+      </div>
     </div>
+    <div class="col-md-2"></div>
+  </div>
 </div>
 
 {% endblock content %}

@@ -34,7 +34,7 @@ class SiteForm(forms.ModelForm):
     def __init__(self, user=None, *args, **kwargs):
         if user:
             self.user = user
-        super(SiteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_url(self):
         url = self.cleaned_data["url"]
@@ -56,11 +56,6 @@ class SiteEditForm(forms.ModelForm):
         empty_label="All",
         label="",
     )
-    url = forms.URLField(
-        max_length=200,
-        help_text="Please enter the URL of the site." "",
-        label="Site URL",
-    )
 
     class Meta:
         model = Site
@@ -77,3 +72,23 @@ class SiteEditForm(forms.ModelForm):
         if deadline < timezone.localtime(timezone.now()):
             raise ValidationError("Not a valid deadline.")
         return deadline
+
+
+class CategoryForm(forms.ModelForm):
+    name = forms.CharField(max_length=50, help_text="Add a category")
+
+    class Meta:
+        model = Category
+        fields = ("name",)
+
+    def __init__(self, user=None, *args, **kwargs):
+        if user:
+            self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if Category.objects.filter(Q(user=self.user) & Q(name=name)):
+            raise ValidationError("Name already present in the database")
+        return name
+

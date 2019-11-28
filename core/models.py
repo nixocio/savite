@@ -13,13 +13,15 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=False, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ("-created_at",)
         verbose_name_plural = "categories"
+        unique_together = ["name", "user"]
 
     def __str__(self):
         return self.name
@@ -32,7 +34,7 @@ def default_date():
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", blank=False)
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="categories"
+        Category, on_delete=models.CASCADE, related_name="categories"
     )
     image_path = models.CharField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
