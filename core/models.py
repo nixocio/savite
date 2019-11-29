@@ -51,11 +51,11 @@ class Site(models.Model):
     def image_path_modified(self):
         if os.path.isfile(
             os.path.join(
-                os.path.join(settings.MEDIA_ROOT, 'users'), os.path.join(
-                    self.user.username, self.image_path)
+                os.path.join(settings.MEDIA_ROOT, "users"),
+                os.path.join(self.user.username, self.image_path),
             )
         ):
-            return os.path.join('users', self.user.username, self.image_path)
+            return os.path.join("users", self.user.username, self.image_path)
         return os.path.join("default", "default_image.jpg")
 
     class Meta:
@@ -78,8 +78,7 @@ class Site(models.Model):
 @receiver(post_delete, sender=Site)
 def remove_file(sender, instance, *args, **kwargs):
     file_path = os.path.join(
-        settings.MEDIA_ROOT, os.path.join(
-            instance.user.username, instance.image_path)
+        settings.MEDIA_ROOT, os.path.join(instance.user.username, instance.image_path)
     )
     if os.path.exists(file_path):
         os.remove(file_path)
@@ -100,7 +99,7 @@ def get_screen_shot(url, image_dir, image_name):
 
 
 def create_user_dir(username):
-    image_dir = os.path.join(settings.MEDIA_ROOT, 'users', username)
+    image_dir = os.path.join(settings.MEDIA_ROOT, "users", username)
     if not os.path.exists(image_dir):
         os.makedirs(image_dir)
     return image_dir

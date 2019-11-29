@@ -11,17 +11,10 @@ class DateInput(forms.DateInput):
 
 
 class SiteForm(forms.ModelForm):
-    category = forms.ModelChoiceField(
-        queryset=Category.objects.all(),
-        help_text="Pick the category of the site.",
-        empty_label="All",
-        label="",
-    )
-
     url = forms.URLField(
         max_length=200,
         initial="https://",
-        help_text="Please enter the URL of the site." "",
+        help_text="Enter the URL of the site." "",
         label="Site URL",
     )
 
@@ -35,11 +28,15 @@ class SiteForm(forms.ModelForm):
         if user:
             self.user = user
         super().__init__(*args, **kwargs)
+        self.fields["category"].queryset = Category.objects.filter(user=self.user)
+        self.fields["category"].empty_label = "All"
+        self.fields["category"].help_text = "Pick the category of your favorite site."
+        self.fields["deadline"].help_text = "Give yourself a time to read."
 
     def clean_url(self):
         url = self.cleaned_data["url"]
         if Site.objects.filter(Q(user=self.user) & Q(url=url)):
-            raise ValidationError("URL already present in the database")
+            raise ValidationError("URL already present in the database.")
         return url
 
     def clean_deadline(self):
@@ -49,29 +46,12 @@ class SiteForm(forms.ModelForm):
         return deadline
 
 
-class SiteEditForm(forms.ModelForm):
-    category = forms.ModelChoiceField(
-        queryset=Category.objects.all(),
-        help_text="Pick the category of the site.",
-        empty_label="All",
-        label="",
-    )
-
-    class Meta:
-        model = Site
-        widgets = {"deadline": DateInput()}
-        unique_together = ("user", "url")
-        fields = ("category", "url", "deadline")
-
-    def __init__(self, *args, **kwargs):
+class SiteEditForm(SiteForm):
+    def __init__(self, user=None, *args, **kwargs):
+        if user:
+            self.user = user
         super().__init__(*args, **kwargs)
         self.fields["url"].disabled = True
-
-    def clean_deadline(self):
-        deadline = self.cleaned_data["deadline"]
-        if deadline < timezone.localtime(timezone.now()):
-            raise ValidationError("Not a valid deadline.")
-        return deadline
 
 
 class CategoryForm(forms.ModelForm):
@@ -91,4 +71,3 @@ class CategoryForm(forms.ModelForm):
         if Category.objects.filter(Q(user=self.user) & Q(name=name)):
             raise ValidationError("Name already present in the database")
         return name
-
