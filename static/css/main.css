@@ -1,6 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald|Open+Sans&display=swap');
+
 .asteriskField {
     display: none;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 80px;
 }
 
 /* Navbar */
@@ -12,18 +24,15 @@
 
 .nav-link {
     color: black;
-    /* text-transform: lowercase; */
     text-decoration-color: blueviolet;
     text-decoration: underline;
 }
 
 .navbarlink {
     color: #1c1d24;
-    /* text-transform: lowercase; */
 }
 
 .navbarlink:hover {
-    /* color: #1369D5i; */
     color: #d3d3f2;
 }
 
@@ -58,7 +67,12 @@ body {
 
 /* endofcards */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Lato', sans-serif;
 }
 
@@ -159,3 +173,32 @@ h4.txt-tl {
 .txt-para {
     color: #38364D;
 }
+
+/* footer */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px;
+    /* Vertically center the text there */
+    background-color: white;
+}
+
+.jumbotron {
+    background-color: white;
+}
+
+/* body>.container {
+    padding: 60px 15px 0;
+}
+
+.footer>.container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+} */

@@ -6,7 +6,6 @@ from core.models import Category
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web_app.settings")
 
-
 django.setup()
 
 

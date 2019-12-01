@@ -56,8 +56,8 @@
 {% else %}
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-6">
+  <div class="row mt-3">
+    <div class="col-md-12">
       <div class="text-center">
         <a href="{% url 'core:site_create' %}" class="btn btn-success" role="button" aria-pressed="true">Add
           Favorites</a>
@@ -65,13 +65,19 @@
       <br />
       <div class="text-center">
         <h4>No favorite webites save yet.</h4>
-        <h4>Lets change that!</h4>
+        <h4>Let's change that!</h4>
       </div>
     </div>
+  </div>
+  <br />
+  <div class="row mt-5">
+    <div class="col-md-3"></div>
     <div class="col-md-6">
       <img src="\static\images\selecting.svg" class="img-fluid" alt="" />
     </div>
+    <div class="col-md-3"></div>
   </div>
+
 </div>
 
 {% endif %} {% endblock %}
