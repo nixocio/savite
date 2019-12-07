@@ -12,10 +12,7 @@ class DateInput(forms.DateInput):
 
 class SiteForm(forms.ModelForm):
     url = forms.URLField(
-        max_length=200,
-        initial="https://",
-        help_text="Enter the URL of the site." "",
-        label="Site URL",
+        max_length=200, initial="https://", help_text="Enter the URL of the site.", label="Site URL"
     )
 
     class Meta:
@@ -46,12 +43,27 @@ class SiteForm(forms.ModelForm):
         return deadline
 
 
-class SiteEditForm(SiteForm):
-    def __init__(self, user=None, *args, **kwargs):
-        if user:
-            self.user = user
+class SiteEditForm(forms.ModelForm):
+    class Meta:
+        model = Site
+        widgets = {"deadline": DateInput()}
+        unique_together = ("user", "url")
+        fields = ("category", "url", "deadline")
+
+    def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["url"].disabled = True
+        self.fields["category"].queryset = Category.objects.filter(user=user)
+        self.fields["category"].empty_label = "All"
+        self.fields["category"].help_text = "Pick the new category of your favorite site."
+        self.fields["deadline"].help_text = "Update your deadline to read."
+        self.fields["url"].help_text = "URL should not be update."
+
+    def clean_deadline(self):
+        deadline = self.cleaned_data["deadline"]
+        if deadline < timezone.localtime(timezone.now()):
+            raise ValidationError("Not a valid deadline.")
+        return deadline
 
 
 class CategoryForm(forms.ModelForm):

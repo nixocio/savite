@@ -15,7 +15,7 @@ class SiteSerializer(serializers.Serializer):
     category = serializers.CharField()
     url = serializers.URLField()
 
-    def validate_category(self, value):
-        if not Category.objects.filter(name=value):
-            raise ValidationError("Invalid Category.")
-        return value
+    # def validate_category(self, value):
+    #     if not Category.objects.filter(name=value):
+    #         raise ValidationError("Invalid Category.")
+    #     return value

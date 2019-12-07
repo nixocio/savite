@@ -10,8 +10,5 @@ celery_app.config_from_object("django.conf:settings", namespace="CELERY")
 celery_app.autodiscover_tasks()
 
 celery_app.conf.beat_schedule = {
-    "check-expiration-daily": {
-        "task": "deadline_expired",
-        "schedule": crontab(minute=0, hour=0),
-    }
+    "check-expiration-daily": {"task": "deadline_expired", "schedule": crontab(minute=0, hour=0)}
 }

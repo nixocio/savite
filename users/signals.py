@@ -1,8 +1,8 @@
-from core.models import Category
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from core.models import Category
 from users.models import Profile
 
 
@@ -30,7 +30,6 @@ def init_new_user(instance, created, **kwargs):
             "JavaScript",
             "Linux",
             "Music",
-            "Must Read",
             "Open Source",
             "Podcast",
             "Productivity",
