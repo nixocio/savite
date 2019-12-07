@@ -59,8 +59,7 @@ def category_management(request):
 
 @login_required
 def site_read(request):
-    non_expired_sites = Site.objects.filter(
-        Q(user=request.user) & Q(expired=False))
+    non_expired_sites = Site.objects.filter(Q(user=request.user) & Q(expired=False))
     expired_sites_count = Site.objects.filter(
         Q(user=request.user) & Q(expired=True)
     ).count()
@@ -68,8 +67,7 @@ def site_read(request):
     total_categories = {}
     for category in categories:
         total = Site.objects.filter(
-            Q(category__name=category) & Q(
-                user=request.user) & Q(expired=False)
+            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
         ).count()
         if total > 0:
             total_categories.update({category.name: total})
@@ -89,8 +87,7 @@ def site_read(request):
 def site_filter_category(request, category):
     try:
         sites = Site.objects.filter(
-            Q(category__name=category) & Q(
-                user=request.user) & Q(expired=False)
+            Q(category__name=category) & Q(user=request.user) & Q(expired=False)
         )
     except Site.DoesNotExist:
         raise Http404("Not a valid category")
@@ -134,8 +131,7 @@ def sites_create(request):
             category = form.cleaned_data["category"]
             deadline = form.cleaned_data["deadline"]
             now = str(datetime.today().strftime("%a%b%d%H:%M:%S%Y"))
-            image_name = "".join(
-                [request.user.username, "_", now, "_image.png"])
+            image_name = "".join([request.user.username, "_", now, "_image.png"])
             Site(
                 category=category,
                 deadline=deadline,
@@ -143,8 +139,7 @@ def sites_create(request):
                 url=url,
                 user=request.user,
             ).save()
-            messages.success(
-                request, "Entry sucessfully saved - Saving a screen shot")
+            messages.success(request, "Entry sucessfully saved - Saving a screen shot")
             return redirect("core:site_management")
     else:
         form = SiteForm(request.user)
@@ -160,12 +155,15 @@ def site_management(request):
 @login_required
 def site_edit(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
-    form = SiteEditForm(request.user, request.POST or None, instance=site)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Entry sucessfully modified")
-        return redirect("core:site_management")
-    return render(request, "core/site_create.html", {"form": form})
+    if request.method == "POST":
+        form = SiteEditForm(request.user, request.POST or None, instance=site)
+        if form.is_valid():
+            site = form.save()
+            messages.success(request, "Entry sucessfully modified")
+            return redirect("core:site_management")
+    else:
+        form = SiteEditForm(request.user, instance=site)
+        return render(request, "core/site_create.html", {"form": form})
 
 
 @login_required
