@@ -12,7 +12,7 @@ from users import views as user_views
 urlpatterns = [
     path("", include("core.urls")),
     path("users/", include("users.urls")),
-    path("admin/", admin.site.urls),
+    path("main/admin/", admin.site.urls),
     path(
         "password-reset/",
         auth_views.PasswordResetView.as_view(
@@ -24,8 +24,7 @@ urlpatterns = [
     path(
         "password-reset/complete/",
         auth_views.PasswordResetCompleteView.as_view(
-            template_name="users/password_reset_complete.html",
-
+            template_name="users/password_reset_complete.html"
         ),
         name="password_reset_complete",
     ),
@@ -40,7 +39,7 @@ urlpatterns = [
     path(
         "password-reset/done/",
         auth_views.PasswordResetDoneView.as_view(
-            template_name="users/password_reset_done.html",
+            template_name="users/password_reset_done.html"
         ),
         name="password_reset_done",
     ),
@@ -54,8 +53,6 @@ if settings.DEBUG:
     import debug_toolbar
     from django.conf.urls.static import static
 
-    urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
 
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
