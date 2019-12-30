@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 
 from core import views as core_views
 from users import views as user_views
@@ -24,21 +24,23 @@ urlpatterns = [
     path(
         "password-reset/complete/",
         auth_views.PasswordResetCompleteView.as_view(
-            template_name="users/password_reset_complete.html"
+            template_name="users/password_reset_complete.html",
+
         ),
         name="password_reset_complete",
     ),
     path(
         "password-reset-confirm/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
-            template_name="users/password_reset_confirm.html"
+            success_url=reverse_lazy("users:login"),
+            template_name="users/password_reset_confirm.html",
         ),
         name="password_reset_confirm",
     ),
     path(
         "password-reset/done/",
         auth_views.PasswordResetDoneView.as_view(
-            template_name="users/password_reset_done.html"
+            template_name="users/password_reset_done.html",
         ),
         name="password_reset_done",
     ),
@@ -52,6 +54,8 @@ if settings.DEBUG:
     import debug_toolbar
     from django.conf.urls.static import static
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

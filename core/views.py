@@ -171,4 +171,4 @@ def site_delete(request, site_id):
     site = get_object_or_404(Site, pk=site_id)
     site.delete()
     messages.success(request, "Entry sucessfully deleted.")
-    return redirect("core:site_management")
+    return redirect("core:site_read")

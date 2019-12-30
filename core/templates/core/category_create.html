@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% load crispy_forms_tags %} {% block content %}
 
-<div class="container">
+<div class="container my-4">
   {% include "messages.html" %}
   <form method="post">
     {% csrf_token %} {{ form|crispy }}

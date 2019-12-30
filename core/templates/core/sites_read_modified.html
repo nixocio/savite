@@ -16,15 +16,20 @@
                 height="400" />
             </div>
             <div class="card-footer">
-              <div class="row">
-                <div class="col-6 text-left">
-                  <small class="text-muted"><strong class="text-black">Category: </strong>{{ site.category }}</small>
+              <div class="col-9">
+                <div class="row">
+                  <small class="text-muted"><strong class="text-black">Deadline:
+                    </strong>{{ site.deadline }}</small>
                 </div>
-                <div class="col-6 text-right">
-                  <a href=" {% url 'core:site_edit' site.id %}"><i class="material-icons material-edit">edit</i></a>
-                  <a href="{% url 'core:site_delete' site.id %}"><i class="material-icons material-remove"
-                      onclick="return confirm('Are you sure you want to delete this item?');">delete</i></a>
+                <div class="row">
+                  <small class="text-muted text-center"><strong class="text-black">Category:
+                    </strong>{{ site.category }}</small>
                 </div>
+              </div>
+              <div class="col-3 my">
+                <a href="{% url 'core:site_edit' site.id %}"><i class="material-icons material-edit">edit</i></a>
+                <a href="{% url 'core:site_delete' site.id %}"><i class="material-icons material-remove"
+                    onclick="return confirm('Are you sure you want to delete this item?');">delete</i></a>
               </div>
             </div>
           </div>

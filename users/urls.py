@@ -24,7 +24,7 @@ urlpatterns = [
         "password-change/",
         auth_views.PasswordChangeView.as_view(
             template_name="users/password_change.html",
-            success_url="/users/password-change/done/",
+            success_url="/users/login/",
         ),
         name="password_change",
     ),

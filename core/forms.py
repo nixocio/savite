@@ -72,7 +72,7 @@ class SiteEditForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    name = forms.CharField(max_length=50, help_text="Add a category")
+    name = forms.CharField(max_length=50, help_text="Add a new category")
 
     class Meta:
         model = Category
