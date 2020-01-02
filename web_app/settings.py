@@ -140,7 +140,8 @@ CELERY_BROKER_URL = "amqp://localhost"
 CELERY_TIMEZONE = "America/New_York"
 
 # REST Stuff
-REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
+REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": [
+    "rest_framework.permissions.AllowAny"]}
 
 # Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -152,8 +153,7 @@ EMAIL_HOST = "smtp.gmail.com"
 # EMAIL_HOST_USER = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_USER = "savitexyz@gmail.com"
 
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-EMAIL_HOST_PASSWORD = "pmrgatcxslrrwiak"
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 EMAIL_PORT = 587
 
