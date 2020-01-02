@@ -127,8 +127,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # LOGIN_URL = reverse_lazy("users:login")
@@ -151,9 +149,11 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 EMAIL_HOST = "smtp.gmail.com"
 
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST")
+# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = "savitexyz@gmail.com"
 
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+EMAIL_HOST_PASSWORD = "pmrgatcxslrrwiak"
 
 EMAIL_PORT = 587
 

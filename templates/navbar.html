@@ -34,16 +34,16 @@
             {{ user.username }}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'users:password_change' %}">Change password</a>
+            <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'users:logout' %}">Log out</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
           </div>
         </li>
       </ul>
       {% else %}
       <form class="form-inline my-2 my-lg-0">
-        <a href="{% url 'users:login' %}" class="btn">Log in</a>
-        <a href="{% url 'users:register' %}" class="btn btn-succes ml-2">Sign up</a>
+        <a href="{% url 'login' %}" class="btn">Log in</a>
+        <a href="{% url 'register' %}" class="btn btn-succes ml-2">Sign up</a>
       </form>
       {% endif %}
     </div>
