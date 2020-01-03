@@ -12,10 +12,7 @@ class DateInput(forms.DateInput):
 
 class SiteForm(forms.ModelForm):
     url = forms.URLField(
-        max_length=200,
-        initial="https://",
-        help_text="Enter the URL of the site.",
-        label="Site URL",
+        max_length=200, initial="https://", help_text="Enter the URL of the site.", label="Site URL"
     )
 
     class Meta:
@@ -31,7 +28,7 @@ class SiteForm(forms.ModelForm):
         self.fields["category"].queryset = Category.objects.filter(user=self.user)
         self.fields["category"].empty_label = "All"
         self.fields["category"].help_text = "Pick the category of your favorite site."
-        self.fields["deadline"].help_text = "Give yourself a time to read."
+        self.fields["deadline"].help_text = "Give yourself a deadline to read it by."
 
     def clean_url(self):
         url = self.cleaned_data["url"]
@@ -58,11 +55,9 @@ class SiteEditForm(forms.ModelForm):
         self.fields["url"].disabled = True
         self.fields["category"].queryset = Category.objects.filter(user=user)
         self.fields["category"].empty_label = "All"
-        self.fields[
-            "category"
-        ].help_text = "Pick the new category of your favorite site."
+        self.fields["category"].help_text = "Pick the new category of your favorite site."
         self.fields["deadline"].help_text = "Update your deadline to read."
-        self.fields["url"].help_text = "URL should not be update."
+        self.fields["url"].help_text = "URL should not be updated."
 
     def clean_deadline(self):
         deadline = self.cleaned_data["deadline"]

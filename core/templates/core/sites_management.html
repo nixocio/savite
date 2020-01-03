@@ -11,7 +11,7 @@
       <tr>
         <th>URL</th>
         <th>Category</th>
-        <th>Created On</th>
+        <th>Expires On</th>
         <th>Expired</th>
         <th>Action</th>
       </tr>
@@ -19,9 +19,9 @@
     <tbody>
       {% for site in sites %}
       <tr>
-        <td><a href={{ site.url }}>{{ site.url|truncatechars:40 }}</a></td>
+        <td><a href={{ site.url }}>{{ site.url|truncatechars:30 }}</a></td>
         <td class=" tablecenter-modify">{{ site.category }}</td>
-        <td class="tablecenter-modify">{{ site.created_at|date:"M/d/Y" }}</td>
+        <td class="tablecenter-modify">{{ site.deadline|date:"M/d/Y" }}</td>
         {% if site.expired is True %}
         <td class="tablecenter-modify">Yes</td>
         {% else %}

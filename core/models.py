@@ -33,9 +33,7 @@ def default_date():
 
 class Site(models.Model):
     url = models.URLField(verbose_name="Site URL", blank=False)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="categories"
-    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories")
     image_path = models.CharField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -51,8 +49,7 @@ class Site(models.Model):
     def image_path_modified(self):
         if os.path.isfile(
             os.path.join(
-                os.path.join(settings.MEDIA_ROOT, "users"),
-                os.path.join(self.user.username, self.image_path),
+                os.path.join(settings.MEDIA_ROOT, "users"), os.path.join(self.user.username, self.image_path)
             )
         ):
             return os.path.join("users", self.user.username, self.image_path)
@@ -77,9 +74,7 @@ class Site(models.Model):
 
 @receiver(post_delete, sender=Site)
 def remove_file(sender, instance, *args, **kwargs):
-    file_path = os.path.join(
-        settings.MEDIA_ROOT, os.path.join(instance.user.username, instance.image_path)
-    )
+    file_path = os.path.join(settings.MEDIA_ROOT, os.path.join(instance.user.username, instance.image_path))
     if os.path.exists(file_path):
         os.remove(file_path)
 

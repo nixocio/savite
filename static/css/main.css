@@ -9,9 +9,23 @@ html {
     min-height: 100%;
 }
 
+/* Increase all font sizes on mobile */
+@media (max-width: 767px) {
+
+    body {
+        /* default is 1rem or 16px */
+        font-size: 25px;
+    }
+
+}
 
 body {
     /* Margin bottom by footer height */
+    background-color: #fefefe;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
     margin-bottom: 80px;
 }
 
@@ -41,11 +55,6 @@ body {
 }
 
 /* endofnavbar */
-
-body {
-    background-color: #fefefe;
-    font-family: 'Oswald', sans-serif;
-}
 
 /* cards */
 
@@ -189,16 +198,3 @@ h4.txt-tl {
 .jumbotron {
     background-color: white;
 }
-
-/* body>.container {
-    padding: 60px 15px 0;
-}
-
-.footer>.container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-code {
-    font-size: 80%;
-} */

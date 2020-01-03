@@ -1,8 +1,8 @@
-{% extends "main.html" %} 
+{% extends "main.html" %}
 {% load crispy_forms_tags %}
 {% block title %} Savite | Sign up {% endblock %}
 {% block content %}
-<div class="container my-4">
+<div class="container my">
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
@@ -10,7 +10,7 @@
         <p class="display-4">Sign up</p>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %} {{ form|crispy }}
-          <input type="submit" class="btn btn-primary" value="Register" />
+          <input type="submit" class="btn btn-primary" value="Sign up" />
         </form>
       </div>
     </div>

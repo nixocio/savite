@@ -9,15 +9,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class SiteAdmin(admin.ModelAdmin):
-    list_display = (
-        "category",
-        "url",
-        "user",
-        "created_at",
-        "modified_at",
-        "deadline",
-        "expired",
-    )
+    list_display = ("category", "url", "user", "created_at", "modified_at", "deadline", "expired")
     list_filter = ("category", "user", "url", "deadline", "expired")
 
 
