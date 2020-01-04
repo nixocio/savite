@@ -19,9 +19,8 @@
               <div class="row">
                 <div class="col-6 text-left my">
                   <small class="text-muted"><strong class="text-black">Category: </strong>{{ site.category }}</small>
-                  <small class="text-muted"><strong class="text-black">Expires  : </strong>{{ site.deadline|date:"M/d/Y" }}</small>
                 </div>
-                <div class="col-6 text-right my-3 ">
+                <div class="col-6 text-right my">
                   <a href=" {% url 'core:site_edit' site.id %}"><i class="material-icons material-edit">edit</i></a>
                   <a href="{% url 'core:site_delete' site.id %}"><i class="material-icons material-remove"
                       onclick="return confirm('Are you sure you want to delete this item?');">delete</i></a>
