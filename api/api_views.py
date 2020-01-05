@@ -1,8 +1,14 @@
 from datetime import datetime
 
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers import CategorySerializer, SiteSerializer
@@ -10,6 +16,8 @@ from core.models import Category, Site, default_date
 
 
 @api_view(["GET"])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def categories_list(request, format=None):
     if request.method == "GET":
         serializer = CategorySerializer(Category.objects.all(), many=True)
@@ -17,8 +25,11 @@ def categories_list(request, format=None):
 
 
 @api_view(["POST"])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def create_site(request):
     if request.method == "POST":
+        print(request.user)
         serializer = SiteSerializer(data=request.data)
         if serializer.is_valid():
             now = str(datetime.today().timestamp())

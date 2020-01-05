@@ -41,7 +41,7 @@ function getProduct(url, callback, errorCallback) {
         x.send();
     }
     else {
-        errorCallback('No product found in this page.');
+        i
         return;
     }
 }
@@ -60,9 +60,26 @@ function post_site(url) {
     var apiurl = "http://127.0.0.1:8000/api/v1/create/site";
     xmlhttp.open("POST", apiurl);
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    console.log(csrfcookie('cookie'))
+    xmlhttp.setRequestHeader('X-CSRFToken', csrfcookie('cookie'));
     var json_data = JSON.stringify({ "category": "Python", "url": url });
     console.log(json_data);
     xmlhttp.send(json_data);
 
 };
 
+var csrfcookie = function () {
+    var cookieValue = null,
+        name = 'csrftoken';
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
