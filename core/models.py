@@ -28,7 +28,7 @@ class Category(models.Model):
 
 
 def default_date():
-    return timezone.now() + timezone.timedelta(days=30)
+    return timezone.now().date() + timezone.timedelta(days=30)
 
 
 class Site(models.Model):
@@ -60,8 +60,6 @@ class Site(models.Model):
         unique_together = ("user", "url")
 
     def save(self, *args, **kwargs):
-        if self.deadline < timezone.localtime(timezone.now()):
-            raise ValidationError("Not a valid deadline.")
 
         image_dir = create_user_dir(self.user.username)
         get_screen_shot.delay(self.url, image_dir, self.image_path)

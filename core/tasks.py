@@ -7,7 +7,7 @@ from core.models import Site
 def deadline_date():
     sites = Site.objects.all()
     for site in sites:
-        print(site.is_deadline_expired)
+        print(site)
         if site.is_deadline_expired:
             site.expired = True
             site.save()
