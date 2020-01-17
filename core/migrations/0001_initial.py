@@ -18,7 +18,12 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
                 ),
                 ("name", models.CharField(max_length=50, null=True)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
@@ -26,7 +31,8 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],
@@ -37,13 +43,21 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
                 ),
                 ("url", models.URLField(verbose_name="Site URL")),
                 ("image_path", models.CharField(max_length=300)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("modified_at", models.DateTimeField(auto_now=True)),
-                ("deadline", models.DateTimeField(blank=True, default=core.models.default_date)),
+                (
+                    "deadline",
+                    models.DateTimeField(blank=True, default=core.models.default_date),
+                ),
                 ("expired", models.BooleanField(default=False)),
                 (
                     "category",
@@ -56,12 +70,15 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],
             options={"ordering": ("-modified_at",)},
         ),
         migrations.AlterUniqueTogether(name="site", unique_together={("user", "url")}),
-        migrations.AlterUniqueTogether(name="category", unique_together={("name", "user")}),
+        migrations.AlterUniqueTogether(
+            name="category", unique_together={("name", "user")}
+        ),
     ]
