@@ -64,6 +64,9 @@ class Site(models.Model):
 
     def save(self, *args, **kwargs):
 
+        if not self.is_deadline_expired:
+            self.expired = False
+
         image_dir = create_user_dir(self.user.username)
         get_screen_shot.delay(self.url, image_dir, self.image_path)
 
