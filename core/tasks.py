@@ -1,9 +1,9 @@
-from celery import task
+from celery import shared_task
 
 from core.models import Site
 
 
-@task(name="deadline_expired")
+@shared_task(name="deadline_expired")
 def deadline_date():
     sites = Site.objects.all()
     for site in sites:
